@@ -1,8 +1,8 @@
 import React , {Component} from 'react'
 import {connect} from 'react-redux'
-import {addStdx} from '../index'
+import {updateStd} from '../index'
 
-class AddStd extends Component {
+class UpdateStd extends Component {
 
     state = {
         id:0,
@@ -10,16 +10,13 @@ class AddStd extends Component {
         surname:" ",
         Major:" ",
         Gpa:0.0
-       
     }
 
 
-
-    render () {
+    render (){
         return (
             <div>
-                <h1>Add Student</h1>
-                
+                <h1>Edit profile student</h1>
                 id:<input type="number" name="id" onChange={ (e) =>{
                     this.setState({[e.target.name] : e.target.value})
                 }} />
@@ -40,16 +37,9 @@ class AddStd extends Component {
                     this.setState({[e.target.name] : e.target.value})
                 }} />
                 <br/>
-                <button onClick={ () => {this.props.addStudent(this.state);alert("add successful")}}>submit</button>
-    
+                <button onClick={()=>{this.props.updateStdentID(this.state.id,this.state);alert("update successful")}}>submit</button>
             </div>
         )
-    }
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-       addStudent : (value) => dispatch( addStdx(value))
     }
 }
 
@@ -59,5 +49,10 @@ const mapStateToProps = (state) => {
     }
 }
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateStdentID : (id,value) => dispatch(updateStd(id,value))
+    }
+}
 
-export default connect(mapStateToProps,mapDispatchToProps)(AddStd)
+export default connect(mapStateToProps,mapDispatchToProps)(UpdateStd)

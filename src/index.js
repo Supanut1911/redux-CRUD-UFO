@@ -13,7 +13,7 @@ import thunk from 'redux-thunk'
 
 
 
-//======action=======
+//======action===========================================================================
 //action : getAllStd
 export const getStdSuccess = (std) => {
     console.log("do")
@@ -39,8 +39,28 @@ export const getStdId = (value) => {
     }
 }
 
+export const addStdUp = (value) => {
+    return {
+        type:"ADD_STD",
+        payload:value
+    }
+}
 
-//=======functional=======
+export const delStdId = (value) => {
+    return {
+        type : "DEL_STD",
+        payload:value
+    }
+}
+
+export const updateStdId = (value) => {
+    return {
+        type:"UPDATE_STD",
+        payload:value
+    }
+}
+
+//=======functional===========================================================================
 //function:getALLstd
 export const getStd = () => async (dispatch) => {
    
@@ -67,15 +87,45 @@ export const getStdById = (id) => async (dispatch) => {
     }
 }
 //function:Add
-export const addStd = (value) => async (dispatch) => {
-    // try{
-    //     const res = await axios.post(`http://localhost/api/psu/${id}`)
-    // }
+export const addStdx = (value) => async (dispatch) => {
+    console.log('data pass :' + value)
+    try{
+        const res = await axios.post(`http://localhost/api/psu/`,value)
+        const resBody = await res.data
+        dispatch ( addStdUp(resBody))
+    }catch(error) {
+        console.log('error')
+    }
+}
+
+//function:DeleteStd
+export const delStd = (value) => async (dispatch) => {
+    console.log('data pass :' + value)
+    try {
+        const res = await axios.delete(`http://localhost/api/psu/${value}`)
+        const resBody = await res.data
+        dispatch( delStdId(resBody) )
+    }catch(error) {
+        console.log('error')
+    }
+}
+//function:UpdateStd
+export const updateStd = (id,value) => async (dispatch) => {
+    console.log('date pass:'+id +" , " + value)
+    try{
+        const res = await axios.put(`http://localhost/api/psu/${id}`,value)
+        const resBody = await res.data
+        dispatch(updateStdId(resBody))
+    }catch (error) {
+        console.log('error')
+    }
 }
 
 
 
-//======reducer
+
+
+//======reducer========================================================================================
 export const stdReducer = (state =[], action) => {
     switch(action.type){
         case "GET_STD_SUCCESS" :
@@ -85,6 +135,12 @@ export const stdReducer = (state =[], action) => {
             return action.payload
         case "GET_STD_ID" :
             return action.payload
+        case "ADD_STD":
+            return action.payload
+        case "DEL_STD":
+            return action.payload
+        case "UPDATE_STD":
+            return action.payload
         default :
             return state
 
@@ -92,7 +148,7 @@ export const stdReducer = (state =[], action) => {
     
 }
 
-
+//============store========================================================================================
 export const rootReducer = combineReducers({
     std : stdReducer
 })
